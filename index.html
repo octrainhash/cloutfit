@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cloutfit</title>
+<meta name="description" content="Scan your closet, style outfits from your own clothes, and see them on you.">
+<meta name="theme-color" content="#FBF7F3">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="brand">Cloutfit</div>
+    <button class="ic" id="settingsBtn" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>
+  </header>
+
+  <main>
+    <!-- CLOSET -->
+    <section id="closet" class="view on" aria-label="Closet">
+      <div class="phead">
+        <div><h1>Closet</h1><p class="sub" id="closetSub"></p></div>
+        <button class="primary" id="addBtn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add clothes</button>
+      </div>
+      <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><input id="q" type="search" placeholder="Search your closet" autocomplete="off"></div>
+      <div class="chips" id="cats"></div>
+      <div class="chips dots" id="colours"></div>
+      <div class="sortrow"><span id="count"></span><select id="sort" aria-label="Sort"><option value="new">Newest</option><option value="worn">Most worn</option><option value="least">Least worn</option><option value="colour">Colour</option><option value="name">A–Z</option></select></div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden>
+        <img src="assets/mannequin-woman.webp" alt="" class="emptyfig">
+        <h2>Your closet is empty</h2>
+        <p>Lay each piece flat on a plain floor or bed and photograph it from above. Pick lots of photos at once: Cloutfit cuts out the background and works out the colour.</p>
+        <button class="primary" id="emptyAdd">Scan my clothes</button>
+      </div>
+    </section>
+
+    <!-- STYLE -->
+    <section id="style" class="view" aria-label="Style">
+      <div class="phead">
+        <div><h1>Style</h1><p class="sub">Tap clothes to dress the mannequin. Drag to move; pinch or drag the corner to resize.</p></div>
+      </div>
+      <div class="studio">
+        <div class="boardwrap">
+          <div class="boardbar">
+            <div class="seg" id="modeSeg"><button data-m="mannequin" class="on">Mannequin</button><button data-m="flat">Flat lay</button></div>
+            <div class="seg" id="figSeg"><button data-f="woman" class="on">Her</button><button data-f="man">Him</button></div>
+          </div>
+          <div class="board" id="board"><img id="fig" src="assets/mannequin-woman.webp" alt="" draggable="false"><div id="layers"></div></div>
+          <div class="layerbar" id="layerBar" hidden>
+            <button class="ghost sm" data-l="back">Send back</button><button class="ghost sm" data-l="front">Bring front</button><button class="ghost sm" data-l="flip">Flip</button><button class="ghost sm danger" data-l="remove">Remove</button>
+          </div>
+          <div class="boardact">
+            <button class="ghost" id="shuffleBtn"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Shuffle</button>
+            <button class="ghost" id="clearBtn">Clear</button>
+            <button class="primary" id="saveLookBtn">Save look</button>
+          </div>
+        </div>
+        <aside class="rail">
+          <div class="chips" id="railCats"></div>
+          <div class="railgrid" id="railGrid"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- LOOKS -->
+    <section id="looks" class="view" aria-label="Looks">
+      <div class="phead"><div><h1>Looks</h1><p class="sub" id="looksSub"></p></div></div>
+      <div class="lookgrid" id="lookGrid"></div>
+      <div class="empty" id="lookEmpty" hidden><h2>No saved looks yet</h2><p>Put an outfit together in Style, then tap “Save look”.</p><button class="primary" data-go="style">Start styling</button></div>
+    </section>
+
+    <!-- TRY ON -->
+    <section id="tryon" class="view" aria-label="Try on">
+      <div class="phead"><div><h1>Try on</h1><p class="sub">Your own clothes on a photo of you, photo-real, made by AI.</p></div></div>
+      <div class="tryon">
+        <div class="tstep">
+          <h3><span>1</span>Your photo</h3>
+          <div class="mephoto" id="mePhoto"></div>
+        </div>
+        <div class="tstep">
+          <h3><span>2</span>What to wear</h3>
+          <p class="hint">A top or jacket, plus bottoms, or a dress.</p>
+          <div class="pickrow" id="tryPicks"></div>
+          <button class="ghost" id="tryChoose">Choose from closet</button>
+        </div>
+        <div class="tstep">
+          <h3><span>3</span>See it on you</h3>
+          <button class="primary big" id="tryGo" disabled>Try it on</button>
+          <p class="hint" id="tryNote"></p>
+          <div class="tryres" id="tryRes"></div>
+        </div>
+      </div>
+      <h3 class="sect" id="tryGalHead" hidden>Your try-ons</h3>
+      <div class="lookgrid" id="tryGallery"></div>
+    </section>
+  </main>
+
+  <nav class="tabs" id="tabs" aria-label="Sections">
+    <button data-tab="closet" class="on"><svg viewBox="0 0 24 24"><path d="M12 5.2a1.9 1.9 0 1 1 1.9 1.9c-1 0-1.9.7-1.9 1.7v.7M3 18.5l9-6.6 9 6.6z"/></svg><span>Closet</span></button>
+    <button data-tab="style"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="4.6" rx="2" ry="2.5"/><path d="M8 9h8l-1.2 6h-1.3L13 22h-2l-.5-7H9.2z"/></svg><span>Style</span></button>
+    <button data-tab="looks"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="9" rx="1.5"/><rect x="13" y="4" width="7" height="6" rx="1.5"/><rect x="4" y="15" width="7" height="5" rx="1.5"/><rect x="13" y="12" width="7" height="8" rx="1.5"/></svg><span>Looks</span></button>
+    <button data-tab="tryon"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4z"/><path d="M18 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg><span>Try on</span></button>
+  </nav>
+</div>
+
+<input type="file" id="files" accept="image/*" multiple hidden>
+<input type="file" id="meFile" accept="image/*" hidden>
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
